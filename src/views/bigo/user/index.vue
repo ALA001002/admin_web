@@ -352,7 +352,7 @@
           <el-input v-model="form.nickName" placeholder="请输入昵称" />
         </el-form-item>
 
-        <el-form-item label="合约控制">
+        <el-form-item label="合约控制" prop="purchaseMethod">
           <el-select
             v-model="form.timeContractControl"
             placeholder="请选择合约控制"
@@ -361,10 +361,10 @@
             style="width: 240px"
           >
             <el-option
-              v-for="dict in timeContractControlOptions"
-              :key="dict.dictValue"
-              :label="dict.dictLabel"
-              :value="dict.dictValue"
+              v-for="type in timeContractControlOptions"
+              :key="type.dictValue"
+              :label="type.dictLabel"
+              :value="type.dictValue"
             />
           </el-select>
         </el-form-item>
