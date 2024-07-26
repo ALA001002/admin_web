@@ -192,6 +192,7 @@
           <span v-html="withdrawStatusFormat(scope.row)"></span>
         </template>
       </el-table-column>
+      <el-table-column label="合约控制状态" align="center" prop="timeContractControl" :formatter="timeContractControlFormat"/>
       <el-table-column label="最后登录IP" align="center" prop="lastLoginIp" min-width="180"/>
       <el-table-column label="登录归属地址" align="center" prop="lastLoginArea" min-width="180"/>
       <el-table-column label="注册IP" align="center" prop="registerIp" min-width="180">
@@ -350,6 +351,24 @@
         <el-form-item  label="昵称" prop="userName">
           <el-input v-model="form.nickName" placeholder="请输入昵称" />
         </el-form-item>
+
+        <el-form-item label="合约控制">
+          <el-select
+            v-model="form.timeContractControl"
+            placeholder="请选择合约控制"
+            clearable
+            size="small"
+            style="width: 240px"
+          >
+            <el-option
+              v-for="dict in timeContractControlOptions"
+              :key="dict.dictValue"
+              :label="dict.dictLabel"
+              :value="dict.dictValue"
+            />
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="账号类型">
           <el-select
             v-model="form.status"
@@ -465,6 +484,7 @@ export default {
       // 日期范围
       dateRange: [],
       // 状态数据字典
+      timeContractControlOptions:[],
       statusOptions: [
         {dictLabel: '正常', dictValue: 0},
         {dictLabel: '禁用', dictValue: 1},
@@ -523,6 +543,9 @@ export default {
   },
   created() {
     this.getList();
+    this.getDicts("time_control_status").then(response => {
+      this.timeContractControlOptions = response.data;
+    });
   },
   methods: {
     /** 查询资产变更列表 */
@@ -568,6 +591,10 @@ export default {
         return row.parentName + '(' + row.parentUid + ')';
       }
 
+    },
+
+    timeContractControlFormat(row, column) {
+      return this.selectDictLabel(this.timeContractControlOptions, row.timeContractControl);
     },
     // 账号状态显示
     statusFormat(row, column) {
